@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 770977acc539d4a13b9bd97b1ab9e9a6, type: 3}
+  m_Name: TapdaqSettings
+  m_EditorClassIdentifier: 
+  ios_applicationID: 62236318fa0a5d2b508d117e
+  ios_clientKey: e1d04314-af19-439d-b3bc-080abe13a518
+  android_applicationID: 6223637208fe6c2d735d7a1a
+  android_clientKey: e1d04314-af19-439d-b3bc-080abe13a518
+  admob_appid_ios: ca-app-pub-4251695259973333~6123447266
+  admob_appid_android: ca-app-pub-4251695259973333~3133246447
+  isDebugMode: 0
+  autoReloadAds: 1
+  networks:
+  - androidEnabled: 1
+    iOSEnabled: 1
+  - androidEnabled: 1
+    iOSEnabled: 1
+  - androidEnabled: 1
+    iOSEnabled: 1
+  - androidEnabled: 0
+    iOSEnabled: 0
+  - androidEnabled: 1
+    iOSEnabled: 0
+  - androidEnabled: 1
+    iOSEnabled: 1
+  - androidEnabled: 1
+    iOSEnabled: 1
+  - androidEnabled: 1
+    iOSEnabled: 1
+  - androidEnabled: 1
+    iOSEnabled: 1
+  - androidEnabled: 1
+    iOSEnabled: 1
+  - androidEnabled: 1
+    iOSEnabled: 1
+  - androidEnabled: 0
+    iOSEnabled: 0
+  testDevices:
+  - name: Shahvaiz Vivo
+    type: 0
+    adMobId: f54b028b-748e-4e1b-ba95-866d8fd0b242
+    facebookId: 
+  skAdNetworkIds:
+  - key: AdColony
+    value: Multiple
+  - key: AdMob
+    value: "cstr6suwn9.skadnetwork\t"
+  - key: InMobi
+    value: Multiple
+  - key: IronSource
+    value: "su67r6k2v3.skadnetwork\t"
+  - key: UnityAds
+    value: Multiple
+  - key: Maio
+    value: v4nxqhlyqp.skadnetwork
+  - key: Pangle
+    value: Multiple
+  - key: Tapjoy
+    value: Multiple
+  - key: Facebook AN
+    value: Multiple
+  - key: AppLovin
+    value: Multiple
