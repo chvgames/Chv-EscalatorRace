@@ -23,17 +23,14 @@ public class BossArmyHandler : MonoBehaviour
     {
         if (spawnArmy)
         {
-            time -= Time.deltaTime;
 
-            if (time <= 0)
+            if (Toolbox.GameplayScript.doneInitialization)
             {
                 GameObject obj = Instantiate(armyPrefab, standPoint[index].position, standPoint[index].rotation);
                 Toolbox.GameplayScript.AddBossArmy(obj.GetComponent<CharacterHandler>());
                 obj.SetActive(true);
 
                 curArmySpawned++;
-                time = spawnDelay;
-                
                 index++;
 
                 if (index >= standPoint.Length) {

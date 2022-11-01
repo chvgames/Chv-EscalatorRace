@@ -1,4 +1,5 @@
-﻿using GameAnalyticsSDK;
+﻿//	GOOD LUCK TO THE NEXT DEVELOPER ON UPDATING THIS APP
+using GameAnalyticsSDK;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -46,8 +47,14 @@ public class GameManager : MonoBehaviour {
     private void Start()
     {
 		GameAnalytics.Initialize();
-
+		StartCoroutine(StartGame());
 		//AddNotificationChannel();
+		//NotificationHandling();		
+    }
+
+	IEnumerator StartGame()
+    {
+		while (!Toolbox.DB.doneInitializeDB) yield return null;
 
 		if (Toolbox.DB.prefs.FirstRun)
 		{
@@ -58,13 +65,23 @@ public class GameManager : MonoBehaviour {
 			Toolbox.DB.prefs.LastNotificationFireTime = DateTime.Now.AddHours(24);
 			//Schedule_Notification(Toolbox.DB.prefs.LastNotificationFireTime);
 		}
-		else {
+		else
+		{
+			if (SceneManager.GetActiveScene().buildIndex == 0)
+			{
+				if (Toolbox.DB.prefs.DoneTutorial)
+					LoadScene(Constants.sceneIndex_Menu, false, SceneDelay);
+				else
+					LoadScene(Constants.sceneIndex_Tutorial, false, SceneDelay);
+			}
+		}
+	}
 
-            if (SceneManager.GetActiveScene().buildIndex == 0)
-                LoadScene(Constants.sceneIndex_Menu, false, SceneDelay);
-        }
+	IEnumerator DeleteMe()
+    {
+		yield return new WaitForSecondsRealtime(1f);
 
-		//NotificationHandling();		
+		Application.Quit();
     }
 
     void LateUpdate(){
@@ -204,6 +221,32 @@ public class GameManager : MonoBehaviour {
 		StartCoroutine(CR_InstantiateObj( obj, _delay));
 	}
 
+    #region TUTORIAL
+
+    public void Instantiate_TutorialComplete(float _delay)
+	{
+		GameObject obj = (GameObject)Resources.Load(Constants.menuFolderPath + "TutorialComplete");
+
+		StartCoroutine(CR_InstantiateObj(obj, _delay));
+	}
+
+	public void Instantiate_FirstTutorial()
+    {
+		Instantiate((GameObject)Resources.Load(Constants.menuFolderPath + "FirstTutorial"));
+	}
+
+	public void Instantiate_SecondTutorial()
+	{
+		Instantiate((GameObject)Resources.Load(Constants.menuFolderPath + "SecondTutorial"));
+	}
+
+	public void Instantiate_ThirdTutorial()
+	{
+		Instantiate((GameObject)Resources.Load(Constants.menuFolderPath + "ThirdTutorial"));
+	}
+
+	#endregion
+
 	public void Instantiate_LevelFail(float _delay)
 	{
 		GameObject obj = (GameObject)Resources.Load(Constants.menuFolderPath + "LevelFail");
@@ -225,6 +268,10 @@ public class GameManager : MonoBehaviour {
 	{
 		Instantiate((GameObject)Resources.Load(Constants.menuFolderPath + "StoreSkins"));
 	}
+	public void Instantiate_Powerups()
+    {
+		Instantiate((GameObject)Resources.Load(Constants.menuFolderPath + "Powerups"));
+    }
 	public void Instantiate_StoreCars()
 	{
 		Instantiate((GameObject)Resources.Load(Constants.menuFolderPath + "StoreCars"));
@@ -334,6 +381,12 @@ public class GameManager : MonoBehaviour {
 	{
 		Instantiate((GameObject)Resources.Load(Constants.menuFolderPath + "Store"));
 	}	
+
+	public void Instantiate_Quest()
+	{
+		Instantiate((GameObject)Resources.Load(Constants.menuFolderPath + "Quests"));
+	}
+
 	public void Instantiate_PaneltyMsg(String str)
 	{
 		GameObject obj = Instantiate((GameObject)Resources.Load(Constants.menuFolderPath + "Panelty-Msg"));

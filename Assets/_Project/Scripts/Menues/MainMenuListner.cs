@@ -51,6 +51,12 @@ public class MainMenuListner : MonoBehaviour {
 		Toolbox.GameManager.Instantiate_Shop();
 	}
 
+	public void OnPress_Quests()
+	{
+		Toolbox.Soundmanager.PlaySound(Toolbox.Soundmanager.Select);
+		Toolbox.GameManager.Instantiate_Quest();
+	}
+
 	public void OnPress_Fb()
 	{
 		Application.OpenURL(Constants.fb);
@@ -86,8 +92,8 @@ public class MainMenuListner : MonoBehaviour {
 	public void OnPress_Play()
     {
 		Toolbox.Soundmanager.PlaySound(Toolbox.Soundmanager.buttonPressYes);
-		Destroy(gameObject);
-    }
+		Toolbox.GameManager.LoadScene(Constants.sceneIndex_Map, true, 0);
+	}
 
     public void OnPress_Next()
 	{
@@ -98,6 +104,11 @@ public class MainMenuListner : MonoBehaviour {
     {
 		Toolbox.Soundmanager.PlaySound(Toolbox.Soundmanager.buttonPressYes);
 		Toolbox.GameManager.Instantiate_StoreSkin();
+	}
+	public void OnPress_PowerupsSkin()
+	{
+		Toolbox.Soundmanager.PlaySound(Toolbox.Soundmanager.buttonPressYes);
+		Toolbox.GameManager.Instantiate_Powerups();
 	}
 	public void OnPress_StoreCars()
 	{

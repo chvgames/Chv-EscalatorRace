@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class LevelCompleteListner : MonoBehaviour
 {
-
 	public GameObject nextButton;
 	public GameObject doubleRewardButton;
 	public GameObject pressHome;
@@ -35,36 +34,40 @@ public class LevelCompleteListner : MonoBehaviour
 	private void Start()
 	{
 		Toolbox.Soundmanager.PlaySound(Toolbox.Soundmanager.complete);
-		lvlTxt.text = "Level " + (Toolbox.DB.prefs.LastSelectedLevel + 1).ToString();
-		Invoke("ShowNoThanksBtb", 4f);
-		//      Toolbox.GameManager.Analytics_LevelComplete();
 
-		EarningsHandling();
-
-		//      //UnlockCarHandling();
-
-		UnlockNextLevel();
-		NextEnvSetHandling();
-		//      UnlockModeHandling();
-
-		////StarsHandling();
-
-		//if (AdsManager.instance.isRewardedAdAvailable())
-		//	doubleRewardButton.gameObject.SetActive(true);
-		//else
-		//	doubleRewardButton.gameObject.SetActive(false);
-		if ((Toolbox.DB.prefs.LastSelectedLevel + 1) % 5 == 0)
-			Toolbox.DB.prefs.IsBossLevel = true;
-		else
-			Toolbox.DB.prefs.IsBossLevel = false;
-
-
-		if (Toolbox.DB.prefs.LastSelectedLevel % 2 == 0)
+		if (!Toolbox.GameplayScript.onTutorial)
 		{
-			Toolbox.DB.prefs.StartSpawnPlayersVal++;
-		}
+			lvlTxt.text = "Level " + (Toolbox.DB.prefs.LastSelectedLevel + 1).ToString();
+			Invoke("ShowNoThanksBtb", 4f);
+			//      Toolbox.GameManager.Analytics_LevelComplete();
 
-		SetTxt();
+			EarningsHandling();
+
+			//      //UnlockCarHandling();
+
+			UnlockNextLevel();
+			NextEnvSetHandling();
+			//      UnlockModeHandling();
+
+			////StarsHandling();
+
+			//if (AdsManager.instance.isRewardedAdAvailable())
+			//	doubleRewardButton.gameObject.SetActive(true);
+			//else
+			//	doubleRewardButton.gameObject.SetActive(false);
+			if ((Toolbox.DB.prefs.LastSelectedLevel + 1) % 5 == 0)
+				Toolbox.DB.prefs.IsBossLevel = true;
+			else
+				Toolbox.DB.prefs.IsBossLevel = false;
+
+
+			if (Toolbox.DB.prefs.LastSelectedLevel % 2 == 0)
+			{
+				Toolbox.DB.prefs.StartSpawnPlayersVal++;
+			}
+
+			SetTxt();
+		}
 	}
 
 	public void SetTxt()
@@ -191,7 +194,7 @@ public class LevelCompleteListner : MonoBehaviour
 		}
 
 		Toolbox.Soundmanager.PlaySound(Toolbox.Soundmanager.buttonPressYes);
-		Toolbox.GameManager.LoadScene(Toolbox.GameManager.GetCurrentLevelGameScene(), true, 0);
+		Toolbox.GameManager.LoadScene(Constants.sceneIndex_Map, true, 0);
 		AdsManager.instance.ShowAd(AdsManager.AdType.VIDEOINTERSTITIAL);
 
 		//Toolbox.GameManager.directShowVehicleSel = true;
@@ -214,11 +217,17 @@ public class LevelCompleteListner : MonoBehaviour
 
 	public void Press_Home()
 	{
-
 		Toolbox.Soundmanager.PlaySound(Toolbox.Soundmanager.buttonPressYes);
-		Toolbox.GameManager.LoadScene(Constants.sceneIndex_Menu, true, 0);
+		Toolbox.GameManager.LoadScene(Constants.sceneIndex_Map, true, 0);
 		AdsManager.instance.ShowAd(AdsManager.AdType.INTERSTITIAL);
 
+		Destroy(this.gameObject);
+	}
+
+	public void Press_DoneTutorial()
+	{
+		Toolbox.Soundmanager.PlaySound(Toolbox.Soundmanager.buttonPressYes);
+		Toolbox.GameManager.LoadScene(Constants.sceneIndex_Menu, true, 0);
 		Destroy(this.gameObject);
 	}
 

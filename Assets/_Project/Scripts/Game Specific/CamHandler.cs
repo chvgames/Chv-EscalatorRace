@@ -12,9 +12,16 @@ public class CamHandler : MonoBehaviour
     {
         if (target) {
 
-            this.transform.position = Vector3.Lerp(this.transform.position, target.position, movementSpeed * Time.deltaTime);
-            this.transform.rotation = Quaternion.Lerp(this.transform.rotation, target.transform.rotation, rotationSpeed * Time.deltaTime);
-
+            if (Toolbox.GameplayScript.useSlowPowerup)
+            {
+                this.transform.position = Vector3.Lerp(this.transform.position, target.position, movementSpeed * Time.unscaledDeltaTime);
+                this.transform.rotation = Quaternion.Lerp(this.transform.rotation, target.transform.rotation, rotationSpeed * Time.unscaledDeltaTime);
+            }
+            else
+            {
+                this.transform.position = Vector3.Lerp(this.transform.position, target.position, movementSpeed * Time.deltaTime);
+                this.transform.rotation = Quaternion.Lerp(this.transform.rotation, target.transform.rotation, rotationSpeed * Time.deltaTime);
+            }
         }
 
     }

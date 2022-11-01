@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class VehicleHandler : MonoBehaviour
 {
-    private float speed = 1;
+    public float speed;
     public bool hasFixedSpeed = false;
 
     public float minSpeedRange = 1;
@@ -14,20 +14,27 @@ public class VehicleHandler : MonoBehaviour
 
     private void Start()
     {
-        if (hasFixedSpeed)
+        if (Toolbox.GameplayScript.onTutorial)
         {
-            speed = maxSpeedRange;
-        }
-        else { 
-        
-            speed = Random.Range(minSpeedRange, maxSpeedRange);
+            if (hasFixedSpeed)
+            {
+                speed = maxSpeedRange;
+            }
+            else
+            {
+
+                speed = Random.Range(minSpeedRange, maxSpeedRange);
+            }
         }
 
     }
 
     private void FixedUpdate()
     {
-        this.transform.position += (this.transform.forward) * Time.deltaTime * speed;
+        if (Toolbox.GameplayScript.useSlowPowerup)
+            this.transform.position += (this.transform.forward) * Time.deltaTime * 0.5f;
+        else
+            this.transform.position += (this.transform.forward) * Time.deltaTime * speed;
 
         if (Vector3.Distance(this.transform.position, endPoint.transform.position) < 2) {
 

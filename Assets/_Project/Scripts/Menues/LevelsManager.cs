@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class LevelsManager : MonoBehaviour
 {
-    
+
+    public StageData stageData;
     public bool testMode = false;
     public bool testPlayerObj = false;
     public int testPlayerObjVal = 0;
@@ -24,17 +25,26 @@ public class LevelsManager : MonoBehaviour
 
     private void Start()
     {
-        startPlayerSpawnAmount = Toolbox.DB.prefs.StartSpawnPlayersVal;
-        isBossLevel = Toolbox.DB.prefs.IsBossLevel;
-        time = spawnDelay;
+        if (!Toolbox.GameplayScript.onTutorial && !Toolbox.GameplayScript.onMainMenu)
+        {
+            startPlayerSpawnAmount = Toolbox.DB.prefs.StartSpawnPlayersVal;
+            isBossLevel = stageData.isBossFight;
+        }
+        else
+        {
+            startPlayerSpawnAmount = 10;
+            isBossLevel = false;
+            spawnArmy = true;
+            time = spawnDelay;
+        }
 
         if (testMode)
-            StartLevelHandling();
+            StartCoroutine(StartLevelHandling());
     }
 
-    public void StartLevelHandling() {
+    public IEnumerator StartLevelHandling() {
 
-        //GameplayScript.currentArea = -1;
+        while (!Toolbox.GameplayScript.doneInitialization) yield return null;
 
         if (testMode)
         {
@@ -55,13 +65,10 @@ public class LevelsManager : MonoBehaviour
 
         if (isBossLevel) {
 
-            Toolbox.GameplayScript.environmentBossCastle[Toolbox.DB.prefs.LastSelectedEnv].SetActive(true);
-            Toolbox.GameplayScript.environmentFinalRamp[Toolbox.DB.prefs.LastSelectedEnv].SetActive(false);
-            Toolbox.GameplayScript.finalRoad.SetActive(false);
+            //Toolbox.GameplayScript.environmentBossCastle[Toolbox.DB.prefs.LastSelectedEnv].SetActive(true);
+            //Toolbox.GameplayScript.environmentFinalRamp[Toolbox.DB.prefs.LastSelectedEnv].SetActive(false);
 
-            Toolbox.GameplayScript.jumpTrigger.SetActive(false);
-            Toolbox.GameplayScript.areaListners[Toolbox.GameplayScript.areaListners.Length - 1].gameObject.SetActive(false);
-            Toolbox.GameplayScript.areaListners[Toolbox.GameplayScript.areaListners.Length - 1] = Toolbox.GameplayScript.bossFightArea;
+            Toolbox.GameplayScript.areaListenersList[Toolbox.GameplayScript.areaListenersList.Count - 1] = Toolbox.GameplayScript.bossFightArea;
             Toolbox.GameplayScript.bossFightArea.gameObject.SetActive(true);
         }
     }
@@ -94,7 +101,7 @@ public class LevelsManager : MonoBehaviour
 
         spawnArmy = true;
 
-        Toolbox.GameplayScript.cameraListner.target = Toolbox.GameplayScript.areaListners[0].camPosition;
+        Toolbox.GameplayScript.cameraListner.target = Toolbox.GameplayScript.areaListenersList[0].camPosition;
 
         if (isBossLevel)
             Toolbox.GameplayScript.bossArea.SpawnBossArmy(startPlayerSpawnAmount);
@@ -163,22 +170,42 @@ public class LevelsManager : MonoBehaviour
     {        
         if (spawnArmy)
         {
-            time -= Time.deltaTime;
-
-            if (time <= 0)
+            if (Toolbox.GameplayScript.onTutorial)
             {
-                GameObject obj = Instantiate(Toolbox.GameplayScript.GetPlayerArmyObj(), Toolbox.GameplayScript.startSpawnPoint.position, Toolbox.GameplayScript.startSpawnPoint.rotation);
-                Toolbox.GameplayScript.AddPlayerArmy(obj.GetComponent<CharacterHandler>());
-                obj.SetActive(true);
-                obj.GetComponent<CharacterHandler>().SetAutoMove(Toolbox.GameplayScript.areaListners[0].transform);
+                time -= Time.deltaTime;
 
-                curArmySpawned++;
-                time = spawnDelay;
-
-                if (curArmySpawned >= startPlayerSpawnAmount)
+                if (time <= 0)
                 {
+                    GameObject obj = Instantiate(Toolbox.GameplayScript.GetPlayerArmyObj(), Toolbox.GameplayScript.startSpawnPoint.position, Toolbox.GameplayScript.startSpawnPoint.rotation);
+                    Toolbox.GameplayScript.AddPlayerArmy(obj.GetComponent<CharacterHandler>());
+                    obj.SetActive(true);
+                    obj.GetComponent<CharacterHandler>().SetAutoMove(Toolbox.GameplayScript.areaListners[0].transform);
 
-                    spawnArmy = false;
+                    curArmySpawned++;
+                    time = spawnDelay;
+
+                    if (curArmySpawned >= startPlayerSpawnAmount)
+                    {
+
+                        spawnArmy = false;
+                    }
+                }
+            }
+            else
+            {
+                if (Toolbox.GameplayScript.doneInitialization)
+                {
+                    GameObject obj = Instantiate(Toolbox.GameplayScript.GetPlayerArmyObj(), Toolbox.GameplayScript.startSpawnPoint.position, Toolbox.GameplayScript.startSpawnPoint.rotation);
+                    Toolbox.GameplayScript.AddPlayerArmy(obj.GetComponent<CharacterHandler>());
+                    obj.SetActive(true);
+                    obj.GetComponent<CharacterHandler>().SetAutoMove(Toolbox.GameplayScript.areaListenersList[0].transform);
+
+                    curArmySpawned++;
+
+                    if (curArmySpawned >= startPlayerSpawnAmount)
+                    {
+                        spawnArmy = false;
+                    }
                 }
             }
         }

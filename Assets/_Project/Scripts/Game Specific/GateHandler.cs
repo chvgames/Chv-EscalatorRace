@@ -98,6 +98,9 @@ public class GateHandler : MonoBehaviour
         switch (type)
         {
             case 0:
+                if (Toolbox.GameplayScript.totalPlayersAvailable >= 270)
+                    return;
+
                 int _point = Random.Range(0, spawnPoint.Length - 1);
                 GameObject obj = Instantiate(_val.gameObject, spawnPoint[_point].position, spawnPoint[_point].rotation);
                 Toolbox.GameplayScript.AddPlayerArmy(obj.GetComponent<CharacterHandler>());
@@ -105,6 +108,8 @@ public class GateHandler : MonoBehaviour
                 break;
 
             case 1:
+                if (Toolbox.GameplayScript.totalPlayersAvailable >= 270)
+                    return;
 
                 int _point2 = Random.Range(0, spawnPoint.Length - 1);
                 int _point3 = Random.Range(0, spawnPoint.Length - 1);
@@ -120,9 +125,10 @@ public class GateHandler : MonoBehaviour
             case 2:
                 divideCharVal++;
 
-                if (divideCharVal % 3 != 0) {
+                if (divideCharVal % 3 != 0 && !Toolbox.GameplayScript.useDividePowerup) {
 
                     _val.GetComponent<CharacterHandler>().Die();
+                    Toolbox.GameplayScript.totalDeaths++;
                     HUDListner.instance.score.text = Toolbox.GameplayScript.totalPlayersAvailable.ToString();
                 }
 
@@ -132,14 +138,18 @@ public class GateHandler : MonoBehaviour
 
                 divideCharVal++;
 
-                if (divideCharVal % 2 == 0)
+                if (divideCharVal % 2 == 0 && !Toolbox.GameplayScript.useDividePowerup)
                 {
                     _val.GetComponent<CharacterHandler>().Die();
+                    Toolbox.GameplayScript.totalDeaths++;
                     HUDListner.instance.score.text = Toolbox.GameplayScript.totalPlayersAvailable.ToString();
                 }
                 break;
 
             case 4:
+                if (Toolbox.GameplayScript.totalPlayersAvailable >= 270)
+                    return;
+
                 int _point4 = Random.Range(0, spawnPoint.Length - 1);
                 GameObject obj4 = Instantiate(_val.gameObject, spawnPoint[_point4].position, spawnPoint[_point4].rotation);
                 Toolbox.GameplayScript.AddPlayerArmy(obj4.GetComponent<CharacterHandler>());

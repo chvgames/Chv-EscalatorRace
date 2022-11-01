@@ -6,7 +6,7 @@ public class RoadHandler : MonoBehaviour
 
     public GameObject[] rangeOfVehicles;
 
-
+    public float vehicleSpeed;
     public int totalVehicles = 1;
     public float spawnDelay = 2;
     float time = 0;
@@ -46,6 +46,7 @@ public class RoadHandler : MonoBehaviour
 
         GameObject obj = Instantiate(vehicle, initPoint.position, initPoint.rotation, this.transform);
         VehicleHandler handl = obj.GetComponent<VehicleHandler>();
+        handl.speed = vehicleSpeed;
         
         obj.SetActive(true);
 

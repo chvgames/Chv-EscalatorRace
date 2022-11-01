@@ -7,11 +7,13 @@ public class SoundManager : MonoBehaviour {
 	public AudioSource audioo;
 	public AudioSource bgMusicSource;
 	public AudioSource vehicleRadio;
+	public AudioSource timerSource;
 
 	[Header("BG Clips")]
 	public AudioClip menuBG;
 	public AudioClip gameBG;
 	public AudioClip[] weatherBG;
+	public AudioClip timerClip;
 
 	[Header("Sound Clips")]
     public AudioClip Select;
@@ -112,6 +114,13 @@ public class SoundManager : MonoBehaviour {
 			audioo.PlayOneShot (_clip);
 	} 
 
+	public void TickerTimer(bool isPlay)
+    {
+		if (isPlay)
+			timerSource.Play();
+		else
+			timerSource.Stop();
+    }
 
 	public void Stop_PlayingSound(){
 		audioo.Stop ();

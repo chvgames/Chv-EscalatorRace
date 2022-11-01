@@ -16,7 +16,9 @@ public static class Constants{
     public const int iAd_SceneID = 0;
 
     public const int sceneIndex_Menu = 1;
-    public const int sceneIndex_Game_1 = 1;
+    public const int sceneIndex_Tutorial = 2;
+    public const int sceneIndex_Map = 3;
+    public const int sceneIndex_Game_1 = 4;
     public const int sceneIndex_Game_2 = 1;
     public const int sceneIndex_Game_3 = 1;
     public const int sceneIndex_Game_4 = 1;

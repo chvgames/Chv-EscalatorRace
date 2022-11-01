@@ -17,8 +17,9 @@ public class IAPManager : MonoBehaviour, IStoreListener
         private string removeAds = "No_Ads_Esclator";
 #elif UNITY_ANDROID
     private string removeAds = "esc_no_ads";
-
-        #endif
+#elif UNITY_EDITOR
+    private string removeAds = "esc_no_ads";
+#endif
 
 
 

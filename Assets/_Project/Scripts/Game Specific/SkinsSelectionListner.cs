@@ -13,6 +13,11 @@ public class SkinsSelectionListner : MonoBehaviour
     public Text buttonTxt2;
     public Text buttonTxt3;
     public Text buttonTxt4;
+    public Text buttonTxt6;
+    public Text buttonTxt7;
+    public Text buttonTxt8;
+    public Text buttonTxt9;
+    public Text buttonTxt10;
     public bool purchaseSomething = false;
     public Text buttonTxt5; 
     public Button[] skinsBuyBtn;
@@ -73,8 +78,44 @@ public class SkinsSelectionListner : MonoBehaviour
             Purchased[5].SetActive(true);
             prices[5].SetActive(false);
             skinsBuyBtn[5].interactable = false;
-        } 
-            
+        }
+
+
+        if (Toolbox.DB.prefs.CharactersUnlocked[3] == true)
+        {
+            Purchased[6].SetActive(true);
+            prices[6].SetActive(false);
+            skinsBuyBtn[6].interactable = false;
+        }
+
+
+        if (Toolbox.DB.prefs.CharactersUnlocked[4] == true)
+        {
+            Purchased[7].SetActive(true);
+            prices[7].SetActive(false);
+            skinsBuyBtn[7].interactable = false;
+        }
+
+        if (Toolbox.DB.prefs.CharactersUnlocked[5] == true)
+        {
+            Purchased[8].SetActive(true);
+            prices[8].SetActive(false);
+            skinsBuyBtn[8].interactable = false;
+        }
+
+        if (Toolbox.DB.prefs.CharactersUnlocked[6] == true)
+        {
+            Purchased[9].SetActive(true);
+            prices[9].SetActive(false);
+            skinsBuyBtn[9].interactable = false;
+        }
+
+        if (Toolbox.DB.prefs.CharactersUnlocked[7] == true)
+        {
+            Purchased[10].SetActive(true);
+            prices[10].SetActive(false);
+            skinsBuyBtn[10].interactable = false;
+        }
     }
 
     // Update is called once per frame
@@ -203,7 +244,101 @@ public class SkinsSelectionListner : MonoBehaviour
                     prices[5].SetActive(false);
                     skinsBuyBtn[5].interactable = false;
                     Toolbox.GameManager.InstantiatePopup_Message("You have purchased successfully");
-
+                }
+                else
+                {
+                    Toolbox.GameManager.InstantiatePopup_Message1("You don't have enough coin");
+                }
+                break;
+            case 3:
+                if (int.Parse(buttonTxt6.text) < Toolbox.DB.prefs.GoldCoins)
+                {
+                    Toolbox.GameplayScript.DeductGoldCoins(int.Parse(buttonTxt6.text));
+                    //Toolbox.DB.prefs.GoldCoins -= int.Parse(buttonTxt5.text);
+                    shopTxt.text = Toolbox.DB.prefs.GoldCoins.ToString();
+                    //shopTxt.text -= buttonTxt.text;
+                    purchaseSomething = true;
+                    Toolbox.DB.prefs.CharactersUnlocked[3] = true;
+                    Purchased[6].SetActive(true);
+                    prices[6].SetActive(false);
+                    skinsBuyBtn[6].interactable = false;
+                    Toolbox.GameManager.InstantiatePopup_Message("You have purchased successfully");
+                }
+                else
+                {
+                    Toolbox.GameManager.InstantiatePopup_Message1("You don't have enough coin");
+                }
+                break;
+            case 4:
+                if (int.Parse(buttonTxt7.text) < Toolbox.DB.prefs.GoldCoins)
+                {
+                    Toolbox.GameplayScript.DeductGoldCoins(int.Parse(buttonTxt7.text));
+                    //Toolbox.DB.prefs.GoldCoins -= int.Parse(buttonTxt5.text);
+                    shopTxt.text = Toolbox.DB.prefs.GoldCoins.ToString();
+                    //shopTxt.text -= buttonTxt.text;
+                    purchaseSomething = true;
+                    Toolbox.DB.prefs.CharactersUnlocked[4] = true;
+                    Purchased[7].SetActive(true);
+                    prices[7].SetActive(false);
+                    skinsBuyBtn[7].interactable = false;
+                    Toolbox.GameManager.InstantiatePopup_Message("You have purchased successfully");
+                }
+                else
+                {
+                    Toolbox.GameManager.InstantiatePopup_Message1("You don't have enough coin");
+                }
+                break;
+            case 5:
+                if (int.Parse(buttonTxt8.text) < Toolbox.DB.prefs.GoldCoins)
+                {
+                    Toolbox.GameplayScript.DeductGoldCoins(int.Parse(buttonTxt8.text));
+                    //Toolbox.DB.prefs.GoldCoins -= int.Parse(buttonTxt5.text);
+                    shopTxt.text = Toolbox.DB.prefs.GoldCoins.ToString();
+                    //shopTxt.text -= buttonTxt.text;
+                    purchaseSomething = true;
+                    Toolbox.DB.prefs.CharactersUnlocked[5] = true;
+                    Purchased[8].SetActive(true);
+                    prices[8].SetActive(false);
+                    skinsBuyBtn[8].interactable = false;
+                    Toolbox.GameManager.InstantiatePopup_Message("You have purchased successfully");
+                }
+                else
+                {
+                    Toolbox.GameManager.InstantiatePopup_Message1("You don't have enough coin");
+                }
+                break;
+            case 6:
+                if (int.Parse(buttonTxt9.text) < Toolbox.DB.prefs.GoldCoins)
+                {
+                    Toolbox.GameplayScript.DeductGoldCoins(int.Parse(buttonTxt9.text));
+                    //Toolbox.DB.prefs.GoldCoins -= int.Parse(buttonTxt5.text);
+                    shopTxt.text = Toolbox.DB.prefs.GoldCoins.ToString();
+                    //shopTxt.text -= buttonTxt.text;
+                    purchaseSomething = true;
+                    Toolbox.DB.prefs.CharactersUnlocked[6] = true;
+                    Purchased[9].SetActive(true);
+                    prices[9].SetActive(false);
+                    skinsBuyBtn[9].interactable = false;
+                    Toolbox.GameManager.InstantiatePopup_Message("You have purchased successfully");
+                }
+                else
+                {
+                    Toolbox.GameManager.InstantiatePopup_Message1("You don't have enough coin");
+                }
+                break;
+            case 7:
+                if (int.Parse(buttonTxt10.text) < Toolbox.DB.prefs.GoldCoins)
+                {
+                    Toolbox.GameplayScript.DeductGoldCoins(int.Parse(buttonTxt10.text));
+                    //Toolbox.DB.prefs.GoldCoins -= int.Parse(buttonTxt5.text);
+                    shopTxt.text = Toolbox.DB.prefs.GoldCoins.ToString();
+                    //shopTxt.text -= buttonTxt.text;
+                    purchaseSomething = true;
+                    Toolbox.DB.prefs.CharactersUnlocked[7] = true;
+                    Purchased[10].SetActive(true);
+                    prices[10].SetActive(false);
+                    skinsBuyBtn[10].interactable = false;
+                    Toolbox.GameManager.InstantiatePopup_Message("You have purchased successfully");
                 }
                 else
                 {

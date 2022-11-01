@@ -1,9 +1,11 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Collections;
 
 public class CharacterHandler : MonoBehaviour
 {
+    public WallObstacle wallObstacle;
     public bool isBossCharacter = false;
     public float speed = 1;
     public Rigidbody rigid;
@@ -25,7 +27,8 @@ public class CharacterHandler : MonoBehaviour
     public Vector3 startRotation;
 
     bool areaTriggered = false;
-    bool isDead = false;
+    public bool isDead = false;
+    public bool wall = false;
     //private void Update()
     //{
     //    if (!controleable)
@@ -71,9 +74,10 @@ public class CharacterHandler : MonoBehaviour
                 {
                     this.transform.rotation = Quaternion.Euler(startRotation);
 
+
+
                     if (HUDListner.run && canRun)
                     {
-
                         SimpletMove();
                     }
                 }
@@ -171,15 +175,26 @@ public class CharacterHandler : MonoBehaviour
 
     public void AutoMove() {
 
-        if (target) {
+        if (wall)
+        {
+            return;
+        }
 
+        if (target) {
+                
             if (finished)
             {
                 //Debug.LogError("Lerping");
-                this.transform.position = Vector3.Lerp(this.transform.position, target.transform.position, 0.01f);
+                if (Toolbox.GameplayScript.useSpeedPowerup)
+                    this.transform.position = Vector3.Lerp(this.transform.position, target.transform.position, 0.5f);
+                else
+                    this.transform.position = Vector3.Lerp(this.transform.position, target.transform.position, 0.01f);
             }
             else {
-                transform.Translate(transform.forward * speed);
+                if (Toolbox.GameplayScript.useSpeedPowerup)
+                    transform.Translate(transform.forward * speed * 2f);
+                else
+                    transform.Translate(transform.forward * speed);
             }
 
             this.transform.LookAt(target);
@@ -198,12 +213,18 @@ public class CharacterHandler : MonoBehaviour
 
     public void SimpletMove()
     {
-        transform.Translate(transform.forward * speed);
+        if (Toolbox.GameplayScript.useSpeedPowerup)
+            transform.Translate(transform.forward * speed * 2f);
+        else
+            transform.Translate(transform.forward * speed);
     }
 
     public void JumpMovement()
     {
-        this.transform.position = Vector3.Slerp(this.transform.position, target.transform.position, 0.05f);
+        if (Toolbox.GameplayScript.useSpeedPowerup)
+            this.transform.position = Vector3.Slerp(this.transform.position, target.transform.position, 0.5f);
+        else
+            this.transform.position = Vector3.Slerp(this.transform.position, target.transform.position, 0.05f);
     }
     public void FightReady()
     {
@@ -226,6 +247,7 @@ public class CharacterHandler : MonoBehaviour
         if (other.CompareTag("GoAhead"))
         {
             //Debug.LogError("IN GO!");
+            //Debug.Log(other.transform.parent.name);
             SetAutoMove(other.transform.parent.transform);
             areaTriggered = false;
             SetCanRun(false);
@@ -270,22 +292,39 @@ public class CharacterHandler : MonoBehaviour
         }
 
 
-        if (other.CompareTag("Killer") && !isDead)
+        if (other.CompareTag("Killer") && !isDead && !Toolbox.GameplayScript.useShieldPowerup)
         {
-            
+
             //Debug.LogError("Kill");
+            Toolbox.GameplayScript.totalDeaths++;
             Die();
             HUDListner.instance.score.text = Toolbox.GameplayScript.totalPlayersAvailable.ToString();
             Toolbox.Soundmanager.PlaySound(Toolbox.Soundmanager.vehicleUpgrade);
         }
+
+
+        if (other.CompareTag("Wall"))
+        {
+            wall = true;
+            wallObstacle.AddPrisoners(gameObject.transform);
+        }
+
+        if (other.CompareTag("Bullet"))
+        {
+            Destroy(other.gameObject);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Wall"))
+            wall = false;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-
         if (!isBossCharacter && !isDead)
         {
-
             if (collision.collider.CompareTag("Enemy"))
             {
                 CharacterHandler characterHandler = collision.collider.GetComponentInParent<CharacterHandler>();
@@ -294,7 +333,7 @@ public class CharacterHandler : MonoBehaviour
 
                     characterHandler.Die();
 
-                    if (Toolbox.GameplayScript.totalBossPlayersAvailable > 0)
+                    if (Toolbox.GameplayScript.totalBossPlayersAvailable > 0 && !Toolbox.GameplayScript.useShieldPowerup)
                     {
                         Die();
                     }
@@ -328,8 +367,7 @@ public class CharacterHandler : MonoBehaviour
         {
             Toolbox.GameplayScript.RemoveBossArmy(this);
         }
-        else { 
-        
+        else {
             Toolbox.GameplayScript.RemovePlayerArmy(this);
         }
         rigid.isKinematic = false;

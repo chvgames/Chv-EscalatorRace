@@ -26,7 +26,6 @@ public class AreaListner : MonoBehaviour
             _controller.transform.rotation = areaStandPoints[curStandPointIndex].rotation;
         }
         else {
-
             _controller.SetAutoMove(areaStandPoints[curStandPointIndex]);
         }
         
@@ -34,7 +33,6 @@ public class AreaListner : MonoBehaviour
         curStandPointIndex++;
 
         if (curStandPointIndex >= areaStandPoints.Length) {
-
             maxFilled = true;
             curStandPointIndex = 0;
             //this.transform.localScale = new Vector3(this.transform.localScale.x + expansionVal, 1, this.transform.localScale.z + expansionVal);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -74,6 +75,7 @@ public class Prefs
     [SerializeField] private bool[] skinsUnlocked;
     [SerializeField] private bool[] charactersUnlocked;
     [SerializeField] private bool[] carsUnlocked;
+    [SerializeField] private bool[] questDone;
     [SerializeField] private bool gameAudio = true;
     [SerializeField] private bool gameMusic = true;
     [SerializeField] private bool hasShadows = true;
@@ -99,7 +101,7 @@ public class Prefs
     [SerializeField] private bool tutorialShowed = false;
     [SerializeField] private bool appRated = false;
 
-    [SerializeField] private bool [] modeUnlocked;
+    [SerializeField] private bool[] modeUnlocked;
 
     [SerializeField] private bool isSteerControl = false;
 
@@ -107,11 +109,13 @@ public class Prefs
     [SerializeField] private GameMode[] gameMode;
 
     [SerializeField] private bool[] playerObjectBought;
-    [SerializeField] private int [] playerObjectUpgradeLvl;
-    [SerializeField] private int [] playerObjectPaintValue;
+    [SerializeField] private int[] playerObjectUpgradeLvl;
+    [SerializeField] private int[] playerObjectPaintValue;
 
     [SerializeField] private int lastUnlockableCarID = 0; // 1-14
     [SerializeField] private int lastUnlockableCarUnlockedLevel = 0; // 0-2
+
+    [SerializeField] private bool doneTutorial;
 
 
     //[SerializeField] private bool[] levelsUnlockedMode1;
@@ -131,6 +135,25 @@ public class Prefs
     [SerializeField] private DateTime lastClaimedRewardTime;
     [SerializeField] private int rewardDay;
 
+    [SerializeField] private Nullable<DateTime> lastDoneQuestTime;
+    [SerializeField] private Nullable<DateTime> lastDailyLogin;
+    [SerializeField] private bool doneShareSocMed;
+    [SerializeField] private int totalTroops;
+    [SerializeField] private int totalLevelsDone;
+    [SerializeField] private int totalBossesFight;
+
+    [SerializeField] private int[] currentTimer;
+
+    [SerializeField] private float fireSpeed;
+
+    [SerializeField] private int[] starsLevel;
+    [SerializeField] private bool[] unlockedLevel;
+    [SerializeField] private int currentLevel;
+    [SerializeField] private int divideImmunityStack;
+    [SerializeField] private int slowStack;
+    [SerializeField] private int speedUpStack;
+    [SerializeField] private int shieldStack;
+
     public void UnlockAllPlayerObj()
     {
         for (int i = 0; i < playerObjectBought.Length; i++)
@@ -138,7 +161,7 @@ public class Prefs
             playerObjectBought[i] = true;
         }
     }
-  
+
     public void UnlockAllLevels() {
 
 
@@ -185,9 +208,70 @@ public class Prefs
     public bool[] SkinsUnlocked { get => skinsUnlocked; set => skinsUnlocked = value; }
     public bool[] CharactersUnlocked { get => charactersUnlocked; set => charactersUnlocked = value; }
     public bool[] CarsUnlocked { get => carsUnlocked; set => carsUnlocked = value; }
+    public bool[] QuestUnlocked { get => questDone; set => questDone = value; }
     public int LastSelectedEnv { get => lastSelectedEnv; set => lastSelectedEnv = value; }
     public bool IsBossLevel { get => isBossLevel; set => isBossLevel = value; }
     public int StartSpawnPlayersVal { get => startSpawnPlayersVal; set => startSpawnPlayersVal = value; }
+    public Nullable<DateTime> LastDoneQuestTime { get => lastDoneQuestTime; set => lastDoneQuestTime = value; }
+    public Nullable<DateTime> LastDailyLogin { get => lastDailyLogin; set => lastDailyLogin = value; }
+    public bool DoneSocMedShare { get => doneShareSocMed; set => doneShareSocMed = value; }
+    public int GatheredTroops { get => totalTroops; set => totalTroops = value; }
+    public int LevelsDone { get => totalLevelsDone; set => totalLevelsDone = value; }
+    public int BossesFightDone { get => totalBossesFight; set => totalBossesFight = value; }
+    public int[] CurrentTimer { get => currentTimer; set => currentTimer = value; }
+    public float FireSpeed { get => fireSpeed; set => fireSpeed = value; }
+    public bool DoneTutorial { get => doneTutorial; set => doneTutorial = value; }
+    public int[] StarsLevel { get => starsLevel; set => starsLevel = value; }
+    public bool[] UnlockedLevel { get => unlockedLevel; set => unlockedLevel = value; }
+    public void SetUnlockedLevel(int index, bool value)
+    {
+        unlockedLevel[index] = value;
+    }
+    public void SetStarsLevel(int index, int value)
+    {
+        starsLevel[index] = value;
+    }
+    public int CurrentLevel
+    {
+        get => currentLevel;
+        set => currentLevel = value;
+    }
+    public void SetLevelTimers(int index, int value) => currentTimer[index] = value;
+
+    public int DivideImmunityStack 
+    { 
+        get => divideImmunityStack;
+        set 
+        {
+            divideImmunityStack = value;
+        }
+    }
+
+    public int SlowStack 
+    {
+        get => slowStack; 
+        set
+        {
+            slowStack = value;
+        }
+    }
+
+    public int SpeedStack 
+    {
+        get => speedUpStack; set 
+        {
+            speedUpStack = value;
+        } 
+    }
+
+    public int ShieldStack 
+    {
+        get => shieldStack; 
+        set 
+        {
+            shieldStack = value;
+        } 
+    }
 }
 public class DB : MonoBehaviour {
        
@@ -195,15 +279,20 @@ public class DB : MonoBehaviour {
     public ServerPrefs serverPrefs;
     private GameData mygameData;
     public bool getServerData = false;
+    public bool doneInitializeDB = false;
 
     private void Awake()
     {
-        Load_Binary_Prefs();
 
         //if (getServerData && Application.internetReachability != NetworkReachability.NotReachable)
         //{
         //    StartCoroutine(GetOnlineData());
         //}
+    }
+
+    private void Start()
+    {
+        Load_Binary_Prefs();
     }
 
     public bool isServerPrefAvailable()
@@ -342,6 +431,7 @@ public class DB : MonoBehaviour {
         formatter.Serialize(file, prefs);
 
         file.Close();
+        doneInitializeDB = true;
     }
 
     public void Load_Binary_Prefs()
@@ -360,16 +450,42 @@ public class DB : MonoBehaviour {
                 prefs = tempPrefs;
             }
             else {
-
                 HandleChanges(tempPrefs);
             }
 
             file.Close();
+            doneInitializeDB = true;
         }
         else
         {
-            Save_Binary_Prefs();
+            StartCoroutine(InitializeDatas());
         }
+    }
+
+    IEnumerator InitializeDatas()
+    {
+        int lastTime = 30;
+        prefs.CurrentTimer = new int[500];
+        for (int a = 0; a < 500; a++)
+        {
+            prefs.SetLevelTimers(a, lastTime);
+            lastTime += 5;
+            yield return null;
+        }
+
+        prefs.GoldCoins = 11000;
+        prefs.CharactersUnlocked = new bool[8];
+        prefs.StarsLevel = new int[500];
+        prefs.UnlockedLevel = new bool[500];
+        prefs.SetStarsLevel(0, 0);
+        prefs.SetUnlockedLevel(0, true);
+        prefs.CurrentLevel = 0;
+        prefs.DivideImmunityStack = 0;
+        prefs.SlowStack = 0;
+        prefs.SpeedStack = 0;
+        prefs.ShieldStack = 0;
+
+        Save_Binary_Prefs();
     }
 
 
@@ -403,11 +519,16 @@ public class DB : MonoBehaviour {
 
             prefs.GameMode = tempGameMode;
 
-            //for (int i = 0; i < prefs.GameMode.Length; i++)
-            //{
-            //    prefs.GameMode[i].LevelUnlocked = tempGameMode[i].LevelUnlocked;
-            //    prefs.GameMode[i].LevelStars = tempGameMode[i].LevelStars;
-            //}
+
+            prefs.StarsLevel = _loadedPrefs.StarsLevel;
+            prefs.UnlockedLevel = _loadedPrefs.UnlockedLevel;
+
+
+        //for (int i = 0; i < prefs.GameMode.Length; i++)
+        //{
+        //    prefs.GameMode[i].LevelUnlocked = tempGameMode[i].LevelUnlocked;
+        //    prefs.GameMode[i].LevelStars = tempGameMode[i].LevelStars;
+        //}
 
         //}
 

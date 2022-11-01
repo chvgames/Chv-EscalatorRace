@@ -33,10 +33,18 @@ public class LevelFailListner : MonoBehaviour {
 	}
 
 	public void Press_Restart()
-	{ 
-		Toolbox.Soundmanager.PlaySound(Toolbox.Soundmanager.buttonPressYes); 
-		Toolbox.GameManager.LoadScene(Toolbox.GameManager.GetCurrentLevelGameScene(), true, 0);
-		AdsManager.instance.ShowAd(AdsManager.AdType.INTERSTITIAL);
+	{
+		if (!Toolbox.GameplayScript.onTutorial)
+		{
+			Toolbox.Soundmanager.PlaySound(Toolbox.Soundmanager.buttonPressYes);
+			Toolbox.GameManager.LoadScene(3, true, 0);
+			AdsManager.instance.ShowAd(AdsManager.AdType.INTERSTITIAL);
+		}
+        else
+		{
+			Toolbox.Soundmanager.PlaySound(Toolbox.Soundmanager.buttonPressYes);
+			Toolbox.GameManager.LoadScene(2, true, 0);
+		}
 
 		Destroy(this.gameObject);
 	}

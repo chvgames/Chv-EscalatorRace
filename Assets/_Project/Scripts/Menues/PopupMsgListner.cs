@@ -42,7 +42,7 @@ public class PopupMsgListner : MonoBehaviour
         Toolbox.Soundmanager.PlaySound(Toolbox.Soundmanager.buttonPressYes);
 
         Toolbox.DB.prefs.FirstRun = false;
-        Toolbox.GameManager.LoadScene(Constants.sceneIndex_Menu, false, 0);
+        Toolbox.GameManager.LoadScene(Constants.sceneIndex_Tutorial, false, 0);
         Destroy(this.gameObject);
     }
 

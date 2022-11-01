@@ -26,6 +26,9 @@ TagManager:
   - Fight
   - GoAheadFight
   - Enemy
+  - Wall
+  - Bullet
+  - Levels
   layers:
   - Default
   - TransparentFX
@@ -42,9 +45,9 @@ TagManager:
   - Traffic
   - Roads
   - Environment
-  - 
-  - 
-  - 
+  - Wall
+  - Bullet
+  - Levels
   - 
   - 
   - 
