@@ -11,11 +11,74 @@
         <repository>https://android-sdk.tapdaq.com</repository>
       </repositories>
     </androidPackage>
+    <androidPackage spec="com.tapdaq.sdk:TapdaqAdColonyAdapter:7.10.0">
+      <repositories>
+        <repository>https://android-sdk.tapdaq.com</repository>
+      </repositories>
+    </androidPackage>
+    <androidPackage spec="com.tapdaq.sdk:TapdaqAdMobAdapter:7.10.0">
+      <repositories>
+        <repository>https://android-sdk.tapdaq.com</repository>
+      </repositories>
+    </androidPackage>
+    <androidPackage spec="com.tapdaq.sdk:TapdaqAppLovinAdapter:7.10.0">
+      <repositories>
+        <repository>https://android-sdk.tapdaq.com</repository>
+      </repositories>
+    </androidPackage>
+    <androidPackage spec="com.tapdaq.sdk:TapdaqFANAdapter:7.10.0">
+      <repositories>
+        <repository>https://android-sdk.tapdaq.com</repository>
+      </repositories>
+    </androidPackage>
+    <androidPackage spec="com.tapdaq.sdk:TapdaqInmobiAdapter:7.10.0">
+      <repositories>
+        <repository>https://android-sdk.tapdaq.com</repository>
+      </repositories>
+    </androidPackage>
+    <androidPackage spec="com.tapdaq.sdk:TapdaqIronsourceAdapter:7.10.0">
+      <repositories>
+        <repository>https://android-sdk.tapdaq.com</repository>
+        <repository>https://android-sdk.is.com/</repository>
+      </repositories>
+    </androidPackage>
+    <androidPackage spec="com.tapdaq.sdk:TapdaqMaioAdapter:7.10.0">
+      <repositories>
+        <repository>https://android-sdk.tapdaq.com</repository>
+        <repository>https://imobile-maio.github.io/maven</repository>
+      </repositories>
+    </androidPackage>
+    <androidPackage spec="com.tapdaq.sdk:TapdaqPangleAdapter:7.10.0">
+      <repositories>
+        <repository>https://android-sdk.tapdaq.com</repository>
+        <repository>https://artifact.bytedance.com/repository/pangle</repository>
+      </repositories>
+    </androidPackage>
+    <androidPackage spec="com.tapdaq.sdk:TapdaqTapjoyAdapter:7.10.0">
+      <repositories>
+        <repository>https://android-sdk.tapdaq.com</repository>
+        <repository>https://sdk.tapjoy.com</repository>
+      </repositories>
+    </androidPackage>
+    <androidPackage spec="com.tapdaq.sdk:TapdaqUnityAdsAdapter:7.10.0">
+      <repositories>
+        <repository>https://android-sdk.tapdaq.com</repository>
+      </repositories>
+    </androidPackage>
   </androidPackages>
   <iosPods>
     <sources>
       <source>https://github.com/tapdaq/cocoapods-specs.git</source>
     </sources>
     <iosPod name="Tapdaq" version="7.10.0" minTargetSdk="10.0" />
+    <iosPod name="Tapdaq/AdColony" version="7.10.0" minTargetSdk="9.0" />
+    <iosPod name="Tapdaq/AdMob" version="7.10.0" minTargetSdk="9.0" />
+    <iosPod name="Tapdaq/AppLovin" version="7.10.0" minTargetSdk="9.0" />
+    <iosPod name="Tapdaq/InMobi" version="7.10.0" minTargetSdk="9.0" />
+    <iosPod name="Tapdaq/IronSource" version="7.10.0" minTargetSdk="9.0" />
+    <iosPod name="Tapdaq/Maio" version="7.10.0" minTargetSdk="9.0" />
+    <iosPod name="Tapdaq/Pangle" version="7.10.0" minTargetSdk="9.0" />
+    <iosPod name="Tapdaq/Tapjoy" version="7.10.0" minTargetSdk="9.0" />
+    <iosPod name="Tapdaq/UnityAds" version="7.10.0" minTargetSdk="9.0" />
   </iosPods>
 </dependencies>
